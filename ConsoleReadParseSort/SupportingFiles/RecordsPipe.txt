@@ -1,0 +1,5 @@
+Newton | Cam | M | Blue | 05/11/1989
+Ryan | Matt | M | Red | 05/17/1985
+Brady | Tom | M | Blue | 08/03/1977
+Rodgers | Aaron | M | Green | 12/02/1983
+Trubisky | Mitchell | M | Orange | 08/20/1994
