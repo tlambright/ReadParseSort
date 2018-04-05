@@ -29,7 +29,6 @@ namespace ReadParseSort
         }
 
         private List<Person> _personList;
-
         public List<Person> PersonList
         {
             get
@@ -79,7 +78,7 @@ namespace ReadParseSort
             DelimiterList.Add(Constants.Delimiter_Space);
         }
 
-            public void ReadData()
+        public void ReadData()
         {
             if (FileList != null && FileList.Count > 0)
             {
@@ -95,15 +94,20 @@ namespace ReadParseSort
                         {
                             var person = GetPersonFromTextInput(personRecord);
 
-                            if (person != null)
-                            {
-                                if (!PersonList.Contains(person)) //Don't add duplicates
-                                {
-                                    PersonList.Add(person);
-                                }
-                            }
+                            AddPersonToPersonList(person);
                         }
                     }
+                }
+            }
+        }
+
+        public void AddPersonToPersonList(Person person)
+        {
+            if (person != null)
+            {
+                if (!PersonList.Contains(person)) //Don't add duplicates
+                {
+                    PersonList.Add(person);
                 }
             }
         }
@@ -139,8 +143,10 @@ namespace ReadParseSort
         {
             var returnValue = false;
 
-            // Confirm the record has only 5 elements
-            if (splitData.Length == 5)
+            // Confirm the record has at least 5 elements and the 5th element is a valid DateTime
+            //Date of Birth may include time, space " " delimiter will break this out as additional elements
+            //Ignoring any element after 5th
+            if (splitData.Length >= 5)
             {
                 //Confirm the 5th element if a valid DateTime
                 DateTime checkDate;

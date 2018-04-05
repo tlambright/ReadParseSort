@@ -27,10 +27,6 @@ namespace ConsoleParseSortRecords1
                     }
                 }
 
-                //readParseSort.AddDelimiterToDelimiterList(Constants.Delimiter_Pipe);
-                //readParseSort.AddDelimiterToDelimiterList(Constants.Delimiter_Comma);
-                //readParseSort.AddDelimiterToDelimiterList(Constants.Delimiter_Space);
-
                 readParseSort.ReadData();
 
                 //Sort the Data 
