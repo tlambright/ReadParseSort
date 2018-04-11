@@ -210,6 +210,7 @@ namespace ReadParseSort
 
         public void AddDelimiterToDelimiterList(string delimiter)
         {
+            //Check the length, needs to be only one char
             if (delimiter != null && delimiter.Length == 1)
             {
                 //Don't add it if it already exists
