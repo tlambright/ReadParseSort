@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ReadParseSort
@@ -10,6 +11,9 @@ namespace ReadParseSort
     {
 
         #region Properties
+
+        public string FilesDirectory { get; set; }
+
         private List<string> _fileList;
         public List<string> FileList
         {
@@ -65,7 +69,6 @@ namespace ReadParseSort
         }
         #endregion
 
-
         public ReadParseSortRecords()
         {
             InitializeDefaultSupportedDelimiters();
@@ -76,6 +79,11 @@ namespace ReadParseSort
             DelimiterList.Add(Constants.Delimiter_Pipe);
             DelimiterList.Add(Constants.Delimiter_Comma);
             DelimiterList.Add(Constants.Delimiter_Space);
+
+
+            var fqp = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var supportingFilesDir = string.Format("{0}\\{1}", fqp, "SupportingFiles");
+
         }
 
         public void ReadData()
@@ -188,7 +196,7 @@ namespace ReadParseSort
 
         }
 
-        public void AddFileToFileList(string filePath)
+        public void AddFilePathToFilePathList(string filePath)
         {
             if (filePath != null && filePath.Length > 0)
             {

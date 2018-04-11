@@ -12,7 +12,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SupportingFiles\" />
+    <None Remove="SupportingFiles\PostNewRecord.txt" />
+    <None Remove="SupportingFiles\RecordsComma.txt" />
+    <None Remove="SupportingFiles\RecordsPipe.txt" />
+    <None Remove="SupportingFiles\RecordsSpace.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SupportingFiles\PostNewRecord.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SupportingFiles\RecordsComma.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SupportingFiles\RecordsPipe.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SupportingFiles\RecordsSpace.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

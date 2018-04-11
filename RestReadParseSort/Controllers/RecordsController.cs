@@ -7,34 +7,178 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web;
+using System.Reflection;
 
-namespace RestApplication.Controllers
+namespace RestReadParseSort.Controllers
 {
     public class RecordsController : ApiController
     {
-        // GET: api/Records
-        public IEnumerable<Person> Get()
+        //public string FilesDirectory { get; set; }
+
+        public RecordsController()
         {
-            var readParseSort = new ReadParseSortRecords();
+        }
 
-            //readParseSort.AddFileToFileList(@"C:\Users\Trent\Desktop\ParseSort\RecordsPipe.txt");
-            //readParseSort.AddFileToFileList(@"C:\Users\Trent\Desktop\ParseSort\RecordsSpace.txt");
-            //readParseSort.AddFileToFileList(@"C:\Users\Trent\Desktop\ParseSort\RecordsComma.txt");
+        #region GET
 
-            var supportingFilesDir = Path.Combine(HttpRuntime.AppDomainAppPath, "SupportingFiles");
+        public HttpResponseMessage Get()
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotFound);
 
-            string[] files = Directory.GetFiles(supportingFilesDir);
-
-            foreach (var filePath in files)
+            try
             {
-                var filename = Path.GetFileName(filePath);
-                if (filename.StartsWith("Records"))
+                var readParseSort = new ReadParseSortRecords();
+                var supportingFilesDir = GetSupportingFilesLocation();
+
+                if (!String.IsNullOrEmpty(supportingFilesDir))
                 {
-                    readParseSort.AddFileToFileList(filePath);
+                    readParseSort.FilesDirectory = supportingFilesDir;
+
+                    IEnumerable<Person> persons = GetPersons(readParseSort);
+
+                    if (persons != null)
+                    {
+                        // Write the list to the response body.
+                        response = Request.CreateResponse(HttpStatusCode.OK, persons);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                // ?
+                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
 
-            readParseSort.ReadData();
+            return response;
+        }
+
+        [HttpGet]
+        public HttpResponseMessage gender()
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotFound);
+
+            var readParseSort = new ReadParseSortRecords();
+            var supportingFilesDir = GetSupportingFilesLocation();
+
+            IEnumerable<Person> persons = null;
+
+            if (!String.IsNullOrEmpty(supportingFilesDir))
+            {
+                readParseSort.FilesDirectory = supportingFilesDir;
+
+                persons = GetPersonsSortedByGender(readParseSort);
+            }
+
+            if (persons != null)
+            {
+                // Write the list to the response body.
+                response = Request.CreateResponse(HttpStatusCode.OK, persons);
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        public HttpResponseMessage birthdate()
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotFound);
+
+            var readParseSort = new ReadParseSortRecords();
+            var supportingFilesDir = GetSupportingFilesLocation();
+            IEnumerable<Person> persons = null;
+
+            if (!String.IsNullOrEmpty(supportingFilesDir))
+            {
+                readParseSort.FilesDirectory = supportingFilesDir;
+
+                persons = GetPersonsSortedByBirthdate(readParseSort);
+            }
+
+            if (persons != null)
+            {
+                // Write the list to the response body.
+                response = Request.CreateResponse(HttpStatusCode.OK, persons);
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        public HttpResponseMessage name()
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotFound);
+
+            var readParseSort = new ReadParseSortRecords();
+            var supportingFilesDir = GetSupportingFilesLocation();
+            IEnumerable<Person> persons = null;
+
+            if (!String.IsNullOrEmpty(supportingFilesDir))
+            {
+                readParseSort.FilesDirectory = supportingFilesDir;
+
+                persons = GetPersonsSortedByLastName(readParseSort);
+            }
+
+            if (persons != null)
+            {
+                // Write the list to the response body.
+                response = Request.CreateResponse(HttpStatusCode.OK, persons);
+            }
+
+            return response;
+        }
+        #endregion GET
+
+
+        #region Private Methods
+        private string GetSupportingFilesLocation()
+        {
+            var supportingFilesDir = string.Empty;
+
+            if (HttpContext.Current != null && !string.IsNullOrEmpty(HttpRuntime.AppDomainAppPath))
+            {
+                supportingFilesDir = Path.Combine(HttpRuntime.AppDomainAppPath, "SupportingFiles");
+            }
+            else
+            {
+                var fqp = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                supportingFilesDir = string.Format("{0}\\{1}", fqp, "SupportingFiles");
+            }
+
+            return supportingFilesDir;
+        }
+
+
+
+        private void GetAndReadFiles(ReadParseSortRecords readParseSort)
+        {
+
+            if (!String.IsNullOrEmpty(readParseSort.FilesDirectory))
+            { 
+                string[] files = Directory.GetFiles(readParseSort.FilesDirectory);
+
+                foreach (var filePath in files)
+                {
+                    var filename = Path.GetFileName(filePath);
+                    if (filename.StartsWith("Records"))
+                    {
+                        readParseSort.AddFilePathToFilePathList(filePath);
+                    }
+                }
+
+                // If files were found, read the data
+                if (readParseSort.FileList.Count > 0)
+                { 
+                    readParseSort.ReadData();
+                }
+            }
+        }
+
+        // GET: api/Records
+        private IEnumerable<Person> GetPersons(ReadParseSortRecords readParseSort)
+        {
+            GetAndReadFiles(readParseSort);
 
             //Get list no specific sort 
             var personList = readParseSort.PersonList;
@@ -48,25 +192,9 @@ namespace RestApplication.Controllers
         //    return "value";
         //}
 
-        [HttpGet]
-        public IEnumerable<Person> gender()
+        private IEnumerable<Person>GetPersonsSortedByGender(ReadParseSortRecords readParseSort)
         {
-            var readParseSort = new ReadParseSortRecords();
-
-            var supportingFilesDir = Path.Combine(HttpRuntime.AppDomainAppPath, "SupportingFiles");
-
-            string[] files = Directory.GetFiles(supportingFilesDir);
-
-            foreach (var filePath in files)
-            {
-                var filename = Path.GetFileName(filePath);
-                if (filename.StartsWith("Records"))
-                {
-                    readParseSort.AddFileToFileList(filePath);
-                }
-            }
-
-            readParseSort.ReadData();
+            GetAndReadFiles(readParseSort);
 
             //Get list sorted by Gender (F/M) ascending, Last Name ascending.
             var sortedListByGenderLastName = readParseSort.SortPersonsByGenderAscLastNameAsc();
@@ -74,25 +202,10 @@ namespace RestApplication.Controllers
             return sortedListByGenderLastName;
         }
 
-        [HttpGet]
-        public IEnumerable<Person> birthdate()
+        //[HttpGet]
+        private IEnumerable<Person> GetPersonsSortedByBirthdate(ReadParseSortRecords readParseSort)
         {
-            var readParseSort = new ReadParseSortRecords();
-
-            var supportingFilesDir = Path.Combine(HttpRuntime.AppDomainAppPath, "SupportingFiles");
-
-            string[] files = Directory.GetFiles(supportingFilesDir);
-
-            foreach (var filePath in files)
-            {
-                var filename = Path.GetFileName(filePath);
-                if (filename.StartsWith("Records"))
-                {
-                    readParseSort.AddFileToFileList(filePath);
-                }
-            }
-
-            readParseSort.ReadData();
+            GetAndReadFiles(readParseSort);
 
             //Get list sorted by by Date of Birth ascending.
             var sortedListByDateOfBirthAsc = readParseSort.SortPersonsByDateOfBirthAsc();
@@ -100,33 +213,19 @@ namespace RestApplication.Controllers
             return sortedListByDateOfBirthAsc;
         }
 
-        [HttpGet]
-        public IEnumerable<Person> name()
+        //[HttpGet]
+        private IEnumerable<Person> GetPersonsSortedByLastName(ReadParseSortRecords readParseSort)
         {
-            var readParseSort = new ReadParseSortRecords();
-
-            var supportingFilesDir = Path.Combine(HttpRuntime.AppDomainAppPath, "SupportingFiles");
-
-            string[] files = Directory.GetFiles(supportingFilesDir);
-
-            foreach (var filePath in files)
-            {
-                var filename = Path.GetFileName(filePath);
-                if (filename.StartsWith("Records"))
-                {
-                    readParseSort.AddFileToFileList(filePath);
-                }
-            }
-
-            readParseSort.ReadData();
+            GetAndReadFiles(readParseSort);
 
             //Get list sorted by Last Name descending.
             var sortedListByLastNameDesc = readParseSort.SortPersonsByLastName();
 
             return sortedListByLastNameDesc;
         }
+        #endregion Private Methods
 
-
+        #region POST
         // POST: api/Records
         //public void Post([FromBody]string value)
         //{
@@ -227,7 +326,7 @@ namespace RestApplication.Controllers
             }
 
         }
-
+        #endregion POST
 
 
         //// PUT: api/Records/5
