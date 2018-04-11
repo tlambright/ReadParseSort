@@ -1,9 +1,3 @@
-<<<<<<< HEAD
 Pacino, Al, M, Red, 04/25/1940
 Keaton, Diane, F, Purple, 01/5/1946
 
-=======
-Pacino, Al, M, Red, 04/25/1940
-Keaton, Diane, F, Purple, 01/5/1946
-
->>>>>>> eedc1e8858a696aa770a4f69e6603007de75c08b

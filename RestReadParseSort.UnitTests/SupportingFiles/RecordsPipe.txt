@@ -1,7 +1,2 @@
-<<<<<<< HEAD
 Trubisky | Mitchell | M | Orange | 08/20/1994
 Rodgers | Aaron | M | Green | 12/02/1983
-=======
-Trubisky | Mitchell | M | Orange | 08/20/1994
-Rodgers | Aaron | M | Green | 12/02/1983
->>>>>>> eedc1e8858a696aa770a4f69e6603007de75c08b
