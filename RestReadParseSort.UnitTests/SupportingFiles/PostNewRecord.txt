@@ -1,0 +1,14 @@
+{
+  "LastName":"Luck", 
+  "FirstName":"Andrew", 
+  "Gender":"M", 
+  "FavoriteColor":"Blue", 
+  "DateOfBirth": "9/12/1989"
+}
+
+"Luck | Andrew | M | Blue | 9/12/1989"
+
+"Luck, Andrew, M, Blue, 9/12/1989"
+
+"Luck Andrew M Blue 9/12/1989"
+
