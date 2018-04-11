@@ -47,8 +47,8 @@ namespace RestReadParseSort.Controllers
             catch (Exception ex)
             {
                 var message = ex.Message;
-                // ?
-                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                // Log something here
+                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
 
             return response;
@@ -59,22 +59,31 @@ namespace RestReadParseSort.Controllers
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotFound);
 
-            var readParseSort = new ReadParseSortRecords();
-            var supportingFilesDir = GetSupportingFilesLocation();
-
-            IEnumerable<Person> persons = null;
-
-            if (!String.IsNullOrEmpty(supportingFilesDir))
+            try
             {
-                readParseSort.FilesDirectory = supportingFilesDir;
+                var readParseSort = new ReadParseSortRecords();
+                var supportingFilesDir = GetSupportingFilesLocation();
 
-                persons = GetPersonsSortedByGender(readParseSort);
+                IEnumerable<Person> persons = null;
+
+                if (!String.IsNullOrEmpty(supportingFilesDir))
+                {
+                    readParseSort.FilesDirectory = supportingFilesDir;
+
+                    persons = GetPersonsSortedByGender(readParseSort);
+                }
+
+                if (persons != null)
+                {
+                    // Write the list to the response body.
+                    response = Request.CreateResponse(HttpStatusCode.OK, persons);
+                }
             }
-
-            if (persons != null)
+            catch (Exception ex)
             {
-                // Write the list to the response body.
-                response = Request.CreateResponse(HttpStatusCode.OK, persons);
+                var message = ex.Message;
+                // Log something here
+                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
 
             return response;
@@ -85,22 +94,32 @@ namespace RestReadParseSort.Controllers
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotFound);
 
-            var readParseSort = new ReadParseSortRecords();
-            var supportingFilesDir = GetSupportingFilesLocation();
-            IEnumerable<Person> persons = null;
-
-            if (!String.IsNullOrEmpty(supportingFilesDir))
+            try
             {
-                readParseSort.FilesDirectory = supportingFilesDir;
+                var readParseSort = new ReadParseSortRecords();
+                var supportingFilesDir = GetSupportingFilesLocation();
+                IEnumerable<Person> persons = null;
 
-                persons = GetPersonsSortedByBirthdate(readParseSort);
+                if (!String.IsNullOrEmpty(supportingFilesDir))
+                {
+                    readParseSort.FilesDirectory = supportingFilesDir;
+
+                    persons = GetPersonsSortedByBirthdate(readParseSort);
+                }
+
+                if (persons != null)
+                {
+                    // Write the list to the response body.
+                    response = Request.CreateResponse(HttpStatusCode.OK, persons);
+                }
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                // Log something here
+                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
 
-            if (persons != null)
-            {
-                // Write the list to the response body.
-                response = Request.CreateResponse(HttpStatusCode.OK, persons);
-            }
 
             return response;
         }
@@ -110,21 +129,30 @@ namespace RestReadParseSort.Controllers
         {
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotFound);
 
-            var readParseSort = new ReadParseSortRecords();
-            var supportingFilesDir = GetSupportingFilesLocation();
-            IEnumerable<Person> persons = null;
-
-            if (!String.IsNullOrEmpty(supportingFilesDir))
+            try
             {
-                readParseSort.FilesDirectory = supportingFilesDir;
+                var readParseSort = new ReadParseSortRecords();
+                var supportingFilesDir = GetSupportingFilesLocation();
+                IEnumerable<Person> persons = null;
 
-                persons = GetPersonsSortedByLastName(readParseSort);
+                if (!String.IsNullOrEmpty(supportingFilesDir))
+                {
+                    readParseSort.FilesDirectory = supportingFilesDir;
+
+                    persons = GetPersonsSortedByLastName(readParseSort);
+                }
+
+                if (persons != null)
+                {
+                    // Write the list to the response body.
+                    response = Request.CreateResponse(HttpStatusCode.OK, persons);
+                }
             }
-
-            if (persons != null)
+            catch (Exception ex)
             {
-                // Write the list to the response body.
-                response = Request.CreateResponse(HttpStatusCode.OK, persons);
+                var message = ex.Message;
+                // Log something here
+                response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
 
             return response;
