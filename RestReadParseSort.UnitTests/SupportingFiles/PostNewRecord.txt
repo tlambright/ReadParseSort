@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "LastName":"Luck", 
   "FirstName":"Andrew", 
@@ -12,3 +13,19 @@
 
 "Luck Andrew M Blue 9/12/1989"
 
+=======
+{
+  "LastName":"Luck", 
+  "FirstName":"Andrew", 
+  "Gender":"M", 
+  "FavoriteColor":"Blue", 
+  "DateOfBirth": "9/12/1989"
+}
+
+"Luck | Andrew | M | Blue | 9/12/1989"
+
+"Luck, Andrew, M, Blue, 9/12/1989"
+
+"Luck Andrew M Blue 9/12/1989"
+
+>>>>>>> eedc1e8858a696aa770a4f69e6603007de75c08b
